@@ -6,11 +6,11 @@ export default function ProductCard({ product, setAddToCart }) {
 
     return (
         <div className="card-product" key={id}>
-            <div className="card-product__img-hold">
+            <div className="card-product__img-hold" onClick={() => setAddToCart(product)}>
                 <img src={config.pathImg + img} alt={title} className="card-product__img" />
             </div>
             <div className="card-product__text-hold">
-				<div className="card-product__title-link">{title}</div>
+				<div className="card-product__title-link" onClick={() => setAddToCart(product)}>{title}</div>
                 <span className="card-product__price">
                     {price} грн <small>{oldprice} грн</small>
                 </span>
