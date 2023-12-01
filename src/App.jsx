@@ -1,9 +1,10 @@
+import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // Сторінки сайту
+import Home from "./pages/Home";
 import NoMatch from "./pages/NoMatch";
 import Layout from "./pages/Layout";
-import Home from "./pages/Home";
 import About from "./pages/About";
 import Delivery from "./pages/Delivery";
 import Contacts from "./pages/Contacts";

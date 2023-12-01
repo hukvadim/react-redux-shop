@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
-import { linksMain } from "../utils/Links";
+import { linksMain } from "../utils/links";
 
 export default function Navigation() {
 	

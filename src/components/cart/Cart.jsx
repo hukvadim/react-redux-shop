@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { removeFromCart, increaseItemCount, decreaseItemCount } from '../../store/cartSlice'
+import { removeFromCart, increaseItemCount, decreaseItemCount, changeCartVisibility } from '../../store/cartSlice'
 import CartNoResult from './CartNoResult';
 import CartItem from './CartItem';
 import config from '../../utils/config';
-import { getCartVisibility, setCartVisibility } from '../../utils/utils';
+import CartButton from './CartButton';
 
 function Cart() {
 
@@ -12,8 +12,8 @@ function Cart() {
     const dispatch = useDispatch();
 
     // Витягуємо дані корзини
-    const { cart } = useSelector(state => state.cart);
-
+    const { cart, cartVisibility } = useSelector(state => state.cart);
+    
     // Для зручності підраховуємо додані товари
     const cartCount = cart.length;
 
@@ -25,23 +25,14 @@ function Cart() {
 
     // Забираємо кількість товарів
     const setItemCountMinus = (productId) => dispatch(decreaseItemCount({id: productId}));
-    
-    // Використовуємо useState для збереження стану корзини
-    const [cartVisibility, setCartVisibilityEl] = useState(getCartVisibility());
 
 	// Показуємо і приховуємо корзину замовлених товарів
-	const toggleCartVisibility = () => {
-		setCartVisibilityEl(!cartVisibility);
-		setCartVisibility(!cartVisibility);
-	};
+	const toggleCart = () =>  dispatch(changeCartVisibility());
 
     return (
         <div className="cart-added-list">
 
-            <button className="cart-added-list__btn" onClick={toggleCartVisibility}>
-                <span className={`cart-added-summ js-cart-added-summ ${cartCount > 0 ? 'show-num' : ''}`}>{cartCount}</span>
-                <svg className="icon icon-cart-bag"><use href="#icon-cart-bag"></use></svg>
-            </button>
+            <CartButton cartCount={cartCount} toggleCart={toggleCart} />
 
             <div className={`cart-added-list__item-list ${cartVisibility ? 'show' : ''}`}>
 

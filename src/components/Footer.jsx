@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { linksFooter } from "../utils/Links";
+import { linksFooter } from "../utils/links";
 
 export default function Footer() {
 

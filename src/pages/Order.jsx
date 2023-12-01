@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { cleanCart } from '../store/cartSlice'
-import { replaceTemplate } from '../utils/utils';
+import { replaceTemplate } from '../utils';
 
 export default function Order() {
 	

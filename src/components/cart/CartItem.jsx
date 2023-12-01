@@ -1,5 +1,3 @@
-
-
 export default function CartItem({ product, pathImg, delCartProduct, setItemCountPlus, setItemCountMinus }) {
 	const { id, title, img, price, count } = product;
 
