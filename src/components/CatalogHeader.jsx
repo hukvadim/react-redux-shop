@@ -1,11 +1,7 @@
-import { useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 
-function CatalogHeader( { categoryId } ) {
+function CatalogHeader( { categoryId, products, categories } ) {
 	
-    // Витягуємо дані категорій
-    const { products, categories } = useSelector(state => state.catalog);
-
 	return (
 		<div className="catalog__header">
 			<div className="catalog__select-category dropdown">

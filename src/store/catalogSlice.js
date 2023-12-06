@@ -7,6 +7,7 @@ export const fetchCatalog = createAsyncThunk(
 	async function(url = apiUrl.catalog, {rejectWithValue}) {
 		try {
 			const response = await fetch(url);
+			// console.log("Catalog response!");
 			
 			if (!response.ok)
 				throw new Error('При отриманні товарів з сервера, отримали помилку!')
@@ -36,7 +37,7 @@ const catalogSlice = createSlice({
 	initialState: {
 		products: [],
 		categories: [],
-		loading: false,
+		loading: true,
 		error: null
 	},
 	reducers: { },
@@ -55,9 +56,8 @@ const catalogSlice = createSlice({
 				state.error = action.payload;
 			})
 			.addCase(fetchCatalogCategories.fulfilled, (state, action) => {
-				state.loading = false;
 				state.categories = action.payload;
-			});
+			})
 	},
 })
 
