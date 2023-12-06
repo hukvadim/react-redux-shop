@@ -1,6 +1,8 @@
-export default function CartItem({ product, pathImg, delCartProduct, setItemCountPlus, setItemCountMinus }) {
-	const { id, title, img, price, count } = product;
+import { memo } from 'react';
 
+const CartItem = memo(({ product, pathImg, delCartProduct, setItemCountPlus, setItemCountMinus }) => {
+	const { id, title, img, price, count } = product;
+	
 	return (
 		// Відображення товарів з Local Storage
 		<div className="cart-added-list__item">
@@ -19,4 +21,6 @@ export default function CartItem({ product, pathImg, delCartProduct, setItemCoun
 			<button className="cart-added-list__item-btn-minus btn-light" onClick={() => setItemCountMinus(id)}></button>
 		</div>
 	)
-}
+});
+
+export default CartItem;

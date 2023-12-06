@@ -1,10 +1,10 @@
-import React from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { removeFromCart, increaseItemCount, decreaseItemCount, changeCartVisibility } from '../../store/cartSlice'
 import CartNoResult from './CartNoResult';
 import CartItem from './CartItem';
 import config from '../../utils/config';
 import CartButton from './CartButton';
+import { useCallback } from 'react';
 
 function Cart() {
 
@@ -18,28 +18,23 @@ function Cart() {
     const cartCount = cart.length;
 
     // Видалення товару з корзини
-    const delCartProduct = (productId) => dispatch(removeFromCart({id: productId}));
+    const delCartProduct = useCallback((productId) => dispatch(removeFromCart({id: productId})), [dispatch]);
 
     // Добавляємо кількість товарів
-    const setItemCountPlus = (productId) => dispatch(increaseItemCount({id: productId}));
+    const setItemCountPlus = useCallback((productId) => dispatch(increaseItemCount({id: productId})), [dispatch]);
 
     // Забираємо кількість товарів
-    const setItemCountMinus = (productId) => dispatch(decreaseItemCount({id: productId}));
+    const setItemCountMinus = useCallback((productId) => dispatch(decreaseItemCount({id: productId})), [dispatch]);
 
 	// Показуємо і приховуємо корзину замовлених товарів
-	const toggleCart = () =>  dispatch(changeCartVisibility());
+	const toggleCart = useCallback(() =>  dispatch(changeCartVisibility()), [dispatch]);
 
     return (
         <div className="cart-added-list">
-
             <CartButton cartCount={cartCount} toggleCart={toggleCart} />
-
             <div className={`cart-added-list__item-list ${cartVisibility ? 'show' : ''}`}>
-
                 {cart.length === 0 ? (
-
                     <CartNoResult />
-
                 ) : (
                     cart.map((product, index) => {
                         const cartItemProps = {
@@ -50,11 +45,9 @@ function Cart() {
                             setItemCountPlus,
                             setItemCountMinus,
                         };
-
                         return <CartItem {...cartItemProps} />;
                     })
                 )}
-                
             </div>
         </div>
     );

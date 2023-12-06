@@ -1,6 +1,11 @@
+import { useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 
-function CatalogHeader( {categories, categoryId, productsCount} ) {
+function CatalogHeader( { categoryId } ) {
+	
+    // Витягуємо дані категорій
+    const { products, categories } = useSelector(state => state.catalog);
+
 	return (
 		<div className="catalog__header">
 			<div className="catalog__select-category dropdown">
@@ -15,7 +20,7 @@ function CatalogHeader( {categories, categoryId, productsCount} ) {
 					
 				</div>
 			</div>
-			<h3 className="catalog__products-summ">Знайдено товарів: <span id="view-count-products">{productsCount}</span></h3>
+			<h3 className="catalog__products-summ">Знайдено товарів: <span id="view-count-products">{products.length}</span></h3>
 		</div>
 	);
 }

@@ -13,18 +13,20 @@ import storage from 'redux-persist/lib/storage';
 
 // Частина нашої корзини
 import cartReducer from './cartSlice';
+import catalogSlice from './catalogSlice';
 
 // Оприділили де будемо все зберігати
 const persistConfig = {
 	key: 'root',
 	storage,
 	whitelist: ['cart'], // Дозволяти
-	blacklist: [] // Блокувати
+	blacklist: ['catalog'] // Блокувати
 }
 
 // Об'єднуємо всі редюсори
 const rootReducer = combineReducers({
-    cart: cartReducer
+    cart: cartReducer,
+	catalog: catalogSlice
 });
 
 // Персістований варіант редюсорів, при кожній зміні сховища persist буде це бачити

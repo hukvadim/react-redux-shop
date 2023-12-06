@@ -9,11 +9,11 @@ const cartSlice = createSlice({
 	reducers: {
 		addToCart(state, action) {
 
-			// Отримуємо id товару
-			const productIdToAdd = action.payload.id;
+			// Формуємо дані товару
+			const product = action.payload;
 
 			// Шукаємо товар для захисту від дублікату
-			const productExistKey = state.cart.findIndex((item) => item.id === productIdToAdd);
+			const productExistKey = state.cart.findIndex((item) => item.id === product.id);
 			
 			// Добавляємо товар до масиву або кількість в товарі, якщо він є
 			if (productExistKey !== -1) {
@@ -24,8 +24,7 @@ const cartSlice = createSlice({
 			} else {
 
 				// Якщо товару немає в корзині, додаємо його з кількістю 1
-				action.payload.count = 1;
-				state.cart.push(action.payload);
+				state.cart.push({...product, count: 1});
 			}
 			
 		},

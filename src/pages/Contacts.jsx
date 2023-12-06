@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 export default function Contacts() {
+
 	return (
 		<div className="article">
 			<div className="container">

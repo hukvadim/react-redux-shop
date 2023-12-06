@@ -1,41 +1,29 @@
 import React, { useState, useEffect, useCallback } from "react";
-import getData, { apiUrl} from '../api/getData';
+import { useDispatch, useSelector } from 'react-redux';
+import { apiUrl} from '../api/getData';
 import CatalogContent from '../components/CatalogContent';
+import { fetchCatalog } from '../store/catalogSlice';
 
 export default function Search() {
 
+	// Формуємо зверення до сховища
+	const dispatch = useDispatch();
+
+    // Витягуємо дані каталогу
+    const { products, loading, error } = useSelector(state => state.catalog);
+
+	// Для роботи поля пошуку
 	const [searchVal, setSearchVal] = useState('');
 	const [searchTimeId, setSearchTimeId] = useState(0);
-	const [products, setProducts] = useState([]);
-	const [productsCount, setProductsCount] = useState(0);
-	const [loading, setLoading] = useState(false); 
 	
-	// Виводимо товари каталогу
-	function viewCatalogProducts(url = apiUrl.catalog) {
-		
-		// Встановлюємо індикатор завантаження
-		setLoading(true);
-		
-		// Отримуємо товари каталогу
-		getData(url).then((products) => {
-
-			// Вимикаємо індикатор завантаження
-			setLoading(false);
-	
-			// Задаємо підрахунок товарів
-			setProductsCount(products.length);
-	
-			// Виводимо товарів
-			setProducts(products);
-		})
-	}
-
+	// При завантаженні сторінки робимо наступне
 	useEffect(() => {
 		
-		// Виводимо товари каталогу
-		viewCatalogProducts();
+		// Записуємо товари при завантаженні
+		if(products.length === 0)
+			dispatch(fetchCatalog());
 	
-	}, []);
+	}, [products, dispatch]);
 
 	// Пошук товарів
 	const setSearchProducts = useCallback((e) => {
@@ -55,13 +43,14 @@ export default function Search() {
 		// Захист від потрачення пам'яті
 		const timeId = setTimeout(() => {
 			
-		  // Виводимо товари каталогу
-		  viewCatalogProducts(url);
+			// Виводимо товари каталогу
+			dispatch(fetchCatalog(url));
+
 		}, 1000);
 	  
 		// Зберігаємо id запиту
 		setSearchTimeId(timeId);
-	  }, [searchTimeId]);
+	  }, [searchTimeId, dispatch]);
 	  
 
 	return (
@@ -71,16 +60,18 @@ export default function Search() {
 					<div className="catalog__form">
 						<input type="text" className="catalog__form-search" placeholder="Що хочете знайти?" value={searchVal} onInput={setSearchProducts} />
 					</div>
-					{loading 
-					? (
-						<p>Завантаження...</p>
-					) 
-					: (
-						<h3 className="catalog__products-summ">Знайдено товарів: <span className="count-products">{productsCount}</span></h3>
-					)}
+					<h3 className="catalog__products-summ">
+						Знайдено товарів: &nbsp;
+						<span className="count-products">
+							{ loading  ? '...' : products.length }
+						</span>
+					</h3>
 				</div>
-
-				<CatalogContent products={products} />
+				{
+				loading 
+					? <p className='no-result'>Завантаження...</p>
+					: <CatalogContent products={products} loading={loading} error={error} />
+				}
 			</div>
 		</div>
 	);

@@ -1,44 +1,35 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import getData, { apiUrl} from '../api/getData';
+import React, { useEffect } from "react";
+import { useDispatch } from 'react-redux';
+
+import { apiUrl} from '../api/getData';
 import CatalogHeader from './CatalogHeader';
 import CatalogContent from './CatalogContent';
+import { fetchCatalog, fetchCatalogCategories } from '../store/catalogSlice';
 
-function Catalog({ cartState, dispatch }) {
+function Catalog({ categoryId = null }) {
 	
-	const { categoryId } = useParams();
+	// Формуємо зверення до сховища
+	const dispatch = useDispatch();
+	
+	// Дивимося чи існує категорія і формуємо відповідний url
+	const fetchUrl = (categoryId) ? apiUrl.catalogByCategory + categoryId : apiUrl.catalog;
 
-	const [categories, setCategories] = useState([]);
-	const [products, setProducts] = useState([]);
-	const [productsCount, setProductsCount] = useState(0);
-	
+	// Загружаємо дані при завантаженні сторінки
 	useEffect(() => {
-		
-		// Отримуємо категорії каталогу
-		getData(apiUrl.category).then((category) => {
-			setCategories(category);
-		})
-
-		// Дивимося чи існує категорія і формуємо відповідний url
-		const url = (typeof categoryId === 'undefined') ? apiUrl.catalog : apiUrl.catalogByCategory + categoryId;
+			
+		// Записуємо категорії при завантаженні
+		dispatch(fetchCatalogCategories());
 	
-		// Отримуємо товари каталогу
-		getData(url).then((products) => {
+		// Записуємо товари при завантаженні
+		dispatch(fetchCatalog(fetchUrl));
 	
-			// Задаємо підрахунок товарів
-			setProductsCount(products.length);
-	
-			// Виводимо товарів
-			setProducts(products);
-		})
-	
-	}, [categoryId]);
+	}, [fetchUrl, dispatch]);
 
 	return (
 		<div className="catalog">
 			<div className="container">
-				<CatalogHeader categories={categories} categoryId={categoryId} productsCount={productsCount} />
-				<CatalogContent products={products} cartState={cartState} dispatch={dispatch} />
+				<CatalogHeader categoryId={categoryId} />
+				<CatalogContent />
 			</div>
 		</div>
 	);

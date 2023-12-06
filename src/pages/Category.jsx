@@ -1,6 +1,11 @@
+import { useParams } from "react-router-dom";
 import Catalog from '../components/Catalog';
 
-export default function Category({ cartState, dispatch }) {
+export default function Category() {
 
-	return <Catalog cartState={cartState} dispatch={dispatch} />;
+	// Отрмиуємо id категорії
+	const { categoryId } = useParams();
+
+	// Виводимо каталог
+	return <Catalog categoryId={categoryId} />;
 }

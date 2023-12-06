@@ -9,6 +9,7 @@
     --nav-color: #3c3c43;
     --nav-color-rgb: 60, 60, 67;
     --block-padding: 32px;
+    --container-padding: 25px;
 }
 
 * {
@@ -73,13 +74,13 @@ svg {
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 16px;
+    padding: 0 var(--container-padding);
 }
 
 .container-fill {
     max-width: 1920px;
     margin: 0 auto;
-    padding: 0 16px;
+    padding: 0 var(--container-padding);
 }
 
 .logo {
@@ -155,6 +156,7 @@ svg {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--img-gap);
+    color: var(--text-color);
 }
 .no-result .no-result__img {
     max-width: var(--img-size);
@@ -277,6 +279,50 @@ svg {
 /**
  * Навігація
  */
+.hamburger {
+    --size: 2em;
+    --size-stroke: 2;
+    --time: 500ms;
+    --color: #444;
+    cursor: pointer;
+    width: var(--size);
+    height: var(--size);
+    position: relative;
+}
+
+.hamburger input {
+    display: none;
+}
+
+.hamburger svg {
+    width: var(--size);
+    height: var(--size);
+    transition: transform var(--time) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hamburger .line {
+    fill: none;
+    stroke: var(--color);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: var(--size-stroke);
+    /* Define the transition for transforming the Stroke */
+    transition: stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1), stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hamburger .line-top-bottom {
+    stroke-dasharray: 12 63;
+}
+
+.hamburger input:checked+svg {
+    transform: rotate(-45deg);
+}
+
+.hamburger input:checked+svg .line-top-bottom {
+    stroke-dasharray: 20 300;
+    stroke-dashoffset: -32.42;
+}
+
 .menu {
     display: flex;
     gap: var(--nav-padding);
@@ -356,6 +402,59 @@ svg {
     transform: translate(-50%, 0);
 }
 
+@media (min-width: 891px) {
+    .navigation .hide-pc {
+        display: none;
+    }
+}
+@media (max-width: 890px) {
+    .navigation .logo {
+        font-size: 24px;
+        position: relative;
+        top: -10px;
+    }
+    .navigation .hamburger {
+        display: block;
+        top: -7px;
+        margin-left: 20px;
+    }
+    .navigation .navigation__middle {
+        text-align: left;
+        flex-basis: auto;
+    }
+    .navigation .navigation__right {
+        width: auto;
+    }
+    .navigation .navigation__right .navigation__item-list {
+        margin-right: 0;
+    }
+    .navigation .navigation__links {
+        position: absolute;
+        top: 0px;
+        right: var(--container-padding);
+        transition: 0.25s;
+        opacity: 1;
+        transform: scale(0);
+        padding: 20px 24px;
+        background-color: #ffffff;
+        min-width: 160px;
+        z-index: 99;
+        box-shadow: 0 5px 22px 0 rgba(208, 219, 229, .62), 0 2px 3px 0 rgba(107, 132, 160, .18), 0 5px 5px 0 rgba(237, 239, 242, .36);
+        border-radius: 15px;
+    }
+    .navigation .navigation__links.show {
+        opacity: 1;
+        transform: scale(100%);
+        top: 100px;
+    }
+    .navigation .navigation__links .navigation__item-list {
+        flex-direction: column;
+        gap: 14px;
+    }
+    .navigation .navigation__links .menu__link {
+        font-size: 16px;
+    }
+}
 
 
 
@@ -379,6 +478,12 @@ svg {
     align-items: center;
     padding: 50px 0px var(--block-padding);
 }
+@media (max-width: 650px) {
+    .catalog .catalog__header {
+        flex-direction: column;
+        gap: 0;
+    }
+}
 
 .catalog .catalog__products-summ {
     font-size: 14px;
@@ -390,13 +495,11 @@ svg {
 
 .catalog .catalog__content {
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 15px 35px;
 }
 
-.catalog .catalog__content .card-product {
-    width: calc(24% - 16px);
-}
 
 .catalog .catalog__bottom {
     text-align: center;
@@ -450,15 +553,20 @@ svg {
 .card-product {
     --link: #000;
     --hover-link: var(--pr);
-
-    max-width: 360px;
+    flex: 1 1 335px;
+    max-width: 335px;
 }
 
-.card-product .card-product__img-hold {}
+.card-product .card-product__img-hold {
+    text-align: center;
+    min-height: 264px;
+}
 
 .card-product .card-product__img {
     max-width: 100%;
+    max-height: 264px;
     border-radius: 15px;
+    cursor: pointer;
 }
 
 .card-product .card-product__text-hold {
@@ -598,99 +706,6 @@ svg {
 
 
 
-/**
- * Карточка товару
- */
-.card-product {
-    --link: #000;
-    --hover-link: #318CE7;
-
-    max-width: 360px;
-}
-
-.card-product .card-product__img-hold {
-    text-align: center;
-}
-
-.card-product .card-product__img {
-    max-width: 100%;
-    max-height: 264px;
-    border-radius: 15px;
-    cursor: pointer;
-}
-
-.card-product .card-product__text-hold {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    position: relative;
-    padding: 18px 50px 0 0;
-    margin-bottom: 40px;
-}
-
-.card-product .card-product__title-link {
-    transition: .25s;
-    color: var(--link);
-    font-size: 16px;
-    font-weight: 600;
-    padding-bottom: 4px;
-    margin-bottom: 4px;
-
-    display: flex;
-    -webkit-line-clamp: 3;
-    -moz-line-clamp: 3;
-    line-clamp: 3;
-    -webkit-box-orient: vertical;
-    -moz-box-orient: vertical;
-    box-orient: vertical;
-    overflow: hidden;
-}
-
-.card-product .card-product__title-link:hover {
-    color: var(--hover-link);
-}
-
-.card-product .card-product__price {
-    font-size: 13px;
-    color: #6C798E;
-    font-weight: 500;
-}
-
-.card-product .card-product__price small {
-    position: relative;
-    margin: 0 4px;
-    opacity: .8;
-}
-
-.card-product .card-product__price small::before {
-    content: '';
-    position: absolute;
-    top: 48%;
-    left: 0px;
-    width: 100%;
-    height: 0;
-    border-bottom: 1px solid;
-    opacity: .4;
-    transform: rotate(355deg);
-}
-
-.card-product .card-product__btn-add {
-    color: var(--link);
-    transition: .25s;
-    position: absolute;
-    top: 3px;
-    right: 0;
-    padding: 14px 8px 14px 14px;
-    font-size: 20px;
-    line-height: 1;
-}
-
-.card-product .card-product__btn-add:hover {
-    color: var(--hover-link);
-}
-
-
 
 
 /**
@@ -720,10 +735,6 @@ svg {
     justify-content: center;
     gap: 40px;
     margin-top: 80px;
-}
-
-.hot-offers .hot-offers__cards .card-product {
-    width: 33%;
 }
 
 
@@ -1004,6 +1015,7 @@ svg {
 .social {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     gap: 10px;
 }
 
@@ -1061,6 +1073,12 @@ svg {
 .footer .navbar-nav {
     margin: 42px 0 0;
     justify-content: center;
+    flex-wrap: wrap;
+}
+@media (max-width: 576px) {
+    .footer .navbar-nav {
+        flex-direction: column;
+    }
 }
 
 .footer .nav-item {}

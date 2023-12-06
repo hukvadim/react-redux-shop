@@ -1,17 +1,19 @@
-import { useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import { linksMain } from "../utils/links";
+import { useState } from 'react';
+import NavigationBtnCart from './navigation/NavigationBtnCart';
+import NavigationBtnBurder from './navigation/NavigationBtnBurder';
 
 export default function Navigation() {
 	
-    // Витягуємо дані корзини
-    const { cart } = useSelector(state => state.cart);
+	// Переключалка мобільне меню
+	const [mobileNav, setMobileNav] = useState(false);
 
 	return (
 		<div className="navigation">
 			<div className="container">
 				<div className="navigation__hold">
-					<div className="navigation__left">
+					<div className={`navigation__left navigation__links ${mobileNav ? 'show' : ''}`}>
 						<ul className="menu navigation__item-list">
 						
 							{linksMain.map(({link, val}, key) => (
@@ -32,12 +34,8 @@ export default function Navigation() {
 									<svg className="icon icon-search"><use href="#icon-search"></use></svg>
 								</Link>
 							</li>
-							<li className="navigation__item">
-								<Link to={`order`} className="navigation__item-link">
-									<span className={`cart-added-summ js-cart-added-summ ${cart.length > 0 ? 'show-num' : ''}`}>{cart.length}</span>
-									<svg className="icon icon-cart-bag"><use href="#icon-cart-bag"></use></svg>
-								</Link>
-							</li>
+							<NavigationBtnCart />
+							<NavigationBtnBurder mobileNav={mobileNav} setMobileNav={setMobileNav} />
 						</ul>
 					</div>
 				</div>
