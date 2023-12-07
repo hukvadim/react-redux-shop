@@ -4,10 +4,9 @@ import { apiUrl } from '../api/getData';
 // Отримуємо дані каталогу продуктів
 export const fetchCatalog = createAsyncThunk(
 	'catalog/fetchCatalog',
-	async function(url = apiUrl.catalog, {rejectWithValue}) {
+	async function(url, {rejectWithValue}) {
 		try {
-			const response = await fetch(url);
-			// console.log("Catalog response!");
+			const response = await fetch(url ?? apiUrl.catalog);
 			
 			if (!response.ok)
 				throw new Error('При отриманні товарів з сервера, отримали помилку!')
@@ -62,5 +61,7 @@ const catalogSlice = createSlice({
 })
 
 export const { setLoading } = catalogSlice.actions;
+
+export const selectCatalog = (state) => state.catalog;
 
 export default catalogSlice.reducer;

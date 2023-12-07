@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { apiUrl} from '../api/getData';
 import CatalogContent from '../components/CatalogContent';
-import { fetchCatalog } from '../store/catalogSlice';
+import { selectCatalog, fetchCatalog } from '../store/catalogSlice';
 
 const Search = () => {
 
@@ -10,7 +10,7 @@ const Search = () => {
 	const dispatch = useDispatch();
 
     // Витягуємо дані каталогу
-    const { products, loading, error } = useSelector(state => state.catalog);
+    const { products, loading, error } = useSelector(selectCatalog);
 
 	// Для роботи поля пошуку
 	const [searchTimeId, setSearchTimeId] = useState(0);
